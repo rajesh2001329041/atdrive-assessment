@@ -1,0 +1,41 @@
+# ---------- Dependencies ----------
+node_modules/
+
+# ---------- Secrets and local config (NEVER commit) ----------
+.env
+.env.*
+!.env.example
+
+# ---------- Build output and caches ----------
+dist/
+build/
+out-tsc/
+.angular/
+coverage/
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# ---------- Logs ----------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---------- Editor and IDE files ----------
+.vscode/
+.idea/
+*.swp
+*.sublime-workspace
+
+# ---------- OS files ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- Temporary and archive files ----------
+tmp/
+temp/
+*.tmp
+*.zip

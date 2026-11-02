@@ -1,0 +1,2 @@
+.stat { display: flex; flex-direction: column; gap: .25rem; } .stat strong { font-size: 1.6rem; }
+.weather { display: flex; gap: 1.25rem; align-items: center; margin-top: 1rem; } .temp { font-size: 2.5rem; font-weight: 700; }

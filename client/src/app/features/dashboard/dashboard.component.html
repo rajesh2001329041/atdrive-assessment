@@ -1,0 +1,30 @@
+<h1>Welcome, {{ auth.user()?.username }}</h1>
+
+<div class="grid">
+  <div class="card stat"><span class="muted">Products</span><strong>{{ products.products().length }}</strong></div>
+  <div class="card stat"><span class="muted">Your orders</span><strong>{{ orders.orders().length }}</strong></div>
+  <div class="card stat"><span class="muted">Total ordered</span><strong>{{ totalOrdered() | currency: 'INR' }}</strong></div>
+</div>
+
+<div class="card">
+  <h2>Weather</h2>
+  <div class="row">
+    <input #city [value]="cityName()" placeholder="City" (keyup.enter)="search(city.value)" />
+    <button class="btn btn-primary" (click)="search(city.value)" [disabled]="loading()">Search</button>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Loading weather…</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else if (weather(); as w) {
+    <div class="weather">
+      <div class="temp">{{ w.temperatureC | number: '1.0-1' }}°C</div>
+      <div>
+        <strong>{{ w.city }}, {{ w.country }}</strong>
+        <div>{{ w.condition }}</div>
+        <div class="muted">Humidity {{ w.humidityPercent }}% · Wind {{ w.windSpeedKmh }} km/h</div>
+      </div>
+    </div>
+  }
+</div>

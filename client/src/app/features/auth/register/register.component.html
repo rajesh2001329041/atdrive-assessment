@@ -1,0 +1,26 @@
+<div class="card narrow">
+  <h1>Create account</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Username
+      <input formControlName="username" autocomplete="username" />
+    </label>
+    @if (form.controls.username.touched && form.controls.username.invalid) {
+      <p class="error">Username must be at least 3 characters.</p>
+    }
+    <label>
+      Password
+      <input type="password" formControlName="password" autocomplete="new-password" />
+    </label>
+    @if (form.controls.password.touched && form.controls.password.invalid) {
+      <p class="error">Password must be at least 6 characters.</p>
+    }
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+    <button class="btn btn-primary" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Please wait…' : 'Register' }}
+    </button>
+  </form>
+  <p class="muted">Already have an account? <a routerLink="/auth/login">Sign in</a></p>
+</div>

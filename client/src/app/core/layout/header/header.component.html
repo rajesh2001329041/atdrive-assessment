@@ -1,0 +1,14 @@
+<header class="topbar">
+  <a class="brand" routerLink="/">Shop Admin</a>
+  @if (auth.isLoggedIn()) {
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/products" routerLinkActive="active">Products</a>
+      <a routerLink="/orders" routerLinkActive="active">Orders</a>
+    </nav>
+    <div class="user">
+      <span class="muted">{{ auth.user()?.username }}</span>
+      <button class="btn" (click)="auth.logout()">Logout</button>
+    </div>
+  }
+</header>

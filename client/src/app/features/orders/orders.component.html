@@ -1,0 +1,80 @@
+<h1>Orders</h1>
+
+<div class="card">
+  <h2>{{ editingId() ? 'Edit order #' + editingId() : 'New order' }}</h2>
+  @if (products.products().length === 0) {
+    <p class="muted">Add some products first, then come back to place an order.</p>
+  } @else {
+    <table>
+      <tbody>
+        @for (p of products.products(); track p.id) {
+          <tr>
+            <td>{{ p.name }}</td>
+            <td class="num">{{ p.price | currency: 'INR' }}</td>
+            <td class="qty">
+              <input #q type="number" min="0" [value]="qty()[p.id] ?? 0" (input)="setQty(p.id, q.valueAsNumber)" />
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <p><strong>Estimated total: {{ estimatedTotal() | currency: 'INR' }}</strong>
+      <span class="muted"> (final total is calculated by the server)</span></p>
+    @if (formError()) {
+      <p class="error">{{ formError() }}</p>
+    }
+    <div class="row">
+      <button class="btn btn-primary" (click)="submit()" [disabled]="saving()">
+        {{ editingId() ? 'Update order' : 'Place order' }}
+      </button>
+      @if (editingId()) {
+        <button class="btn" (click)="cancelEdit()">Cancel</button>
+      }
+    </div>
+  }
+</div>
+
+<div class="card">
+  <h2>Find order by ID</h2>
+  <div class="row">
+    <input #lookupId type="number" min="1" placeholder="Order ID" (keyup.enter)="lookup(lookupId.valueAsNumber)" />
+    <button class="btn" (click)="lookup(lookupId.valueAsNumber)">Find</button>
+  </div>
+  @if (lookupError()) {
+    <p class="error">{{ lookupError() }}</p>
+  }
+  @if (lookupResult(); as o) {
+    <p>Order #{{ o.orderId }} — {{ o.totalAmount | currency: 'INR' }} — {{ describe(o).join(', ') }}</p>
+  }
+</div>
+
+<div class="card">
+  <h2>Your orders</h2>
+  @if (orderSvc.loading()) {
+    <p class="muted">Loading orders…</p>
+  } @else if (orderSvc.error()) {
+    <p class="error">{{ orderSvc.error() }}</p>
+  } @else if (orderSvc.orders().length === 0) {
+    <p class="muted">You have not placed any orders yet.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr><th>#</th><th>Items</th><th>Placed</th><th class="num">Total</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (o of orderSvc.orders(); track o.orderId) {
+          <tr>
+            <td>{{ o.orderId }}</td>
+            <td>{{ describe(o).join(', ') }}</td>
+            <td class="muted">{{ o.createdAt | date: 'medium' }}</td>
+            <td class="num">{{ o.totalAmount | currency: 'INR' }}</td>
+            <td class="actions">
+              <button class="btn" (click)="startEdit(o)">Edit</button>
+              <button class="btn btn-danger" (click)="remove(o)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
